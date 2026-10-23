@@ -31,10 +31,14 @@ Türkçe ürün yorumlarını cümle parçalarına ayırıp her parçanın pozit
 
 #### Model dosyası
 
-`model.onnx` (~440 MB) GitHub'ın dosya boyutu sınırını aştığı için repoda yer almaz. Dosyayı edinip şu konuma koyun:
+`model.onnx` (~440 MB) GitHub'ın dosya boyutu sınırını aştığı için repoda yer almaz; Hugging Face'te barındırılır:
+**https://huggingface.co/Mustafassrc/ProductReviewSentiment**
 
-```
-YorumDuyguAnalizi_1/model.onnx
+Dosyayı sayfadan indirip `YorumDuyguAnalizi_1/model.onnx` konumuna koyun ya da repo kök dizininde şu komutu çalıştırın:
+
+```bash
+pip install -U huggingface_hub
+hf download Mustafassrc/ProductReviewSentiment model.onnx --local-dir YorumDuyguAnalizi_1
 ```
 
 Tokenizer dosyaları (`tokenizer/vocab.txt` vb.) repoda mevcuttur.
@@ -77,10 +81,14 @@ A .NET 8 console application that splits Turkish product reviews into clauses an
 
 #### Model file
 
-`model.onnx` (~440 MB) is not included in the repository because it exceeds GitHub's file size limit. Obtain the file and place it at:
+`model.onnx` (~440 MB) is not included in the repository because it exceeds GitHub's file size limit; it is hosted on Hugging Face:
+**https://huggingface.co/Mustafassrc/ProductReviewSentiment**
 
-```
-YorumDuyguAnalizi_1/model.onnx
+Download it from the page and place it at `YorumDuyguAnalizi_1/model.onnx`, or run this from the repository root:
+
+```bash
+pip install -U huggingface_hub
+hf download Mustafassrc/ProductReviewSentiment model.onnx --local-dir YorumDuyguAnalizi_1
 ```
 
 Tokenizer files (`tokenizer/vocab.txt`, etc.) are included in the repository.
