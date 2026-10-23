@@ -1,52 +1,95 @@
-TR
-Duygu Analizi Projesi
-======================
+# Product Review Sentiment (.NET)
 
-- Proje .NET 8.0 ile geliştirilmiştir.
-- Gerekli NuGet paketleri proje dosyasında (.csproj) belirtilememiştir.
-- Bu yüzden NuGet paketleri elle yüklenmelidir:
-    * Microsoft.ML.OnnxRuntime (v1.17.0)
-    * Microsoft.ML.Tokenizers (v0.20.0)
-    * Spire.XLS (v13.6.3)
-
-- Model dosyaları:
-  * model.onnx
-  * tokenizer/vocab.txt
-  Proje klasöründe uygun şekilde yer almalıdır.
-
-- Excel çıktısı ve log dosyası masaüstüne kaydedilir.
+[TR](#tr) | [ENG](#eng)
 
 ---
 
-Not: Kütüphaneler elle yüklendikten sonra proje çalışacaktır.
+## TR
 
-İyi çalışmalar!
-*****************************************************************************************************************************
+### Yorum Duygu Analizi
 
-ENG
-Sentiment Analysis Project
-======================
-The project is developed with .NET 8.0.
+Türkçe ürün yorumlarını cümle parçalarına ayırıp her parçanın pozitif/negatif olduğunu BERT tabanlı bir ONNX modeliyle tahmin eden .NET 8 konsol uygulaması.
 
-Required NuGet packages are not listed in the project file (.csproj).
+#### Nasıl çalışır
 
-Therefore, NuGet packages must be installed manually:
+1. Yorum; noktalama işaretleri (`. ! ? , ; :`) ve bağlaçlar (`ama`, `fakat`, `ancak`, `çünkü`, `lakin`, `ve`) üzerinden parçalara bölünür.
+2. Her parça BERT tokenizer ile token'lara çevrilir (en fazla 32 token) ve ONNX modeline verilir.
+3. Pozitiflik olasılığı 0.5 ve üzerindeyse parça **pozitif** sayılır.
+4. Sonuçlar:
+   - Pozitif parçalar masaüstündeki `DuyguAnalizi_Spire.xls` dosyasına eklenir (tarih, parça, pozitiflik oranı).
+   - Negatif parçalar masaüstündeki `Olumsuz.log` dosyasına yazılır.
 
-Microsoft.ML.OnnxRuntime (v1.17.0)
+#### Gereksinimler
 
-Microsoft.ML.Tokenizers (v0.20.0)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- NuGet paketleri `.csproj` içinde tanımlıdır ve `dotnet restore` ile otomatik yüklenir:
+  - Microsoft.ML.OnnxRuntime 1.22.1
+  - Microsoft.ML.Tokenizers 1.0.2
+  - Spire.XLS 15.7.8
 
-Spire.XLS (v13.6.3)
+> Spire.XLS ticari bir kütüphanedir; lisanssız kullanımda oluşturulan Excel dosyasına "Evaluation Warning" sayfası eklenir.
 
-Model files:
+#### Model dosyası
 
-model.onnx
+`model.onnx` (~440 MB) GitHub'ın dosya boyutu sınırını aştığı için repoda yer almaz. Dosyayı edinip şu konuma koyun:
 
-tokenizer/vocab.txt
-Must be placed properly in the project folder.
+```
+YorumDuyguAnalizi_1/model.onnx
+```
 
-Excel output and log files are saved to the desktop.
+Tokenizer dosyaları (`tokenizer/vocab.txt` vb.) repoda mevcuttur.
 
-Note: The project will run after manually installing the required libraries.
+#### Çalıştırma
 
-Best regards!
+```bash
+cd YorumDuyguAnalizi_1
+dotnet run
+```
+
+Analiz edilecek yorumlar `Program.cs` içindeki `yorumlar` listesinden okunur.
+
+---
+
+## ENG
+
+### Review Sentiment Analysis
+
+A .NET 8 console application that splits Turkish product reviews into clauses and predicts whether each clause is positive or negative using a BERT-based ONNX model.
+
+#### How it works
+
+1. The review is split on punctuation (`. ! ? , ; :`) and Turkish conjunctions (`ama`, `fakat`, `ancak`, `çünkü`, `lakin`, `ve`).
+2. Each clause is tokenized with a BERT tokenizer (max 32 tokens) and fed to the ONNX model.
+3. A clause is considered **positive** if its positive probability is 0.5 or higher.
+4. Output:
+   - Positive clauses are appended to `DuyguAnalizi_Spire.xls` on the desktop (date, clause, positive score).
+   - Negative clauses are written to `Olumsuz.log` on the desktop.
+
+#### Requirements
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- NuGet packages are declared in the `.csproj` and restored automatically with `dotnet restore`:
+  - Microsoft.ML.OnnxRuntime 1.22.1
+  - Microsoft.ML.Tokenizers 1.0.2
+  - Spire.XLS 15.7.8
+
+> Spire.XLS is a commercial library; without a license, an "Evaluation Warning" sheet is added to the generated Excel file.
+
+#### Model file
+
+`model.onnx` (~440 MB) is not included in the repository because it exceeds GitHub's file size limit. Obtain the file and place it at:
+
+```
+YorumDuyguAnalizi_1/model.onnx
+```
+
+Tokenizer files (`tokenizer/vocab.txt`, etc.) are included in the repository.
+
+#### Running
+
+```bash
+cd YorumDuyguAnalizi_1
+dotnet run
+```
+
+Reviews to analyze are read from the `yorumlar` list in `Program.cs`.
